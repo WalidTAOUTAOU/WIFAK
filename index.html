@@ -123,13 +123,15 @@
         .slider {
             display: flex;
             transition: transform 0.5s ease;
+            width: 500%; /* لخمس شرائح */
         }
         
         .slide {
-            min-width: 100%;
+            width: 20%; /* 100% / 5 slides */
             position: relative;
             display: flex;
             justify-content: center;
+            flex-shrink: 0; /* منع الانكماش */
         }
         
         /* تعديل حجم الصور لتبدو كشاشات موبايل */
@@ -292,7 +294,7 @@
         <section class="download-section">
             <h2>تحميل التطبيق</h2>
             <p>يمكنك الآن تحميل تطبيق El-Wifak Club مباشرة على جهازك. التطبيق يقدم لك آخر أخبار النادي، جداول المباريات، النتائج، والكثير من الميزات الأخرى!</p>
-            <a href="https://github.com/WalidTAOUTAOU/WIFAK/releases/download/v1.0/elwifak.apk" class="download-btn">تحميل APK مباشرة</a>
+            <a href="apk/el-wifak-club.apk" class="download-btn">تحميل APK مباشرة</a>
             <a href="https://play.google.com/store/apps/details?id=com.elwifak.club" class="store-btn">Google Play Store</a>
         </section>
         
@@ -301,7 +303,8 @@
                 <div class="slide">
                     <div class="phone-frame">
                         <div class="phone-screen">
-                            <img src="images/screenshots/screenshot1.png" alt="الشاشة الرئيسية للتطبيق">
+                            <img src="images/screenshots/screenshot1.png" alt="الشاشة الرئيسية للتطبيق" 
+                                 onerror="this.onerror=null; this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII='; console.error('خطأ في تحميل screenshot1.png');">
                         </div>
                     </div>
                     <div class="slide-caption">الشاشة الرئيسية للتطبيق</div>
@@ -309,7 +312,8 @@
                 <div class="slide">
                     <div class="phone-frame">
                         <div class="phone-screen">
-                            <img src="images/screenshots/screenshot2.png" alt="جدول المباريات القادمة">
+                            <img src="images/screenshots/screenshot2.png" alt="جدول المباريات القادمة"
+                                 onerror="this.onerror=null; this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII='; console.error('خطأ في تحميل screenshot2.png');">
                         </div>
                     </div>
                     <div class="slide-caption">جدول المباريات القادمة</div>
@@ -317,7 +321,8 @@
                 <div class="slide">
                     <div class="phone-frame">
                         <div class="phone-screen">
-                            <img src="images/screenshots/screenshot3.png" alt="آخر أخبار النادي">
+                            <img src="images/screenshots/screenshot3.png" alt="آخر أخبار النادي"
+                                 onerror="this.onerror=null; this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII='; console.error('خطأ في تحميل screenshot3.png');">
                         </div>
                     </div>
                     <div class="slide-caption">آخر أخبار النادي</div>
@@ -325,7 +330,8 @@
                 <div class="slide">
                     <div class="phone-frame">
                         <div class="phone-screen">
-                            <img src="images/screenshots/screenshot4.png" alt="إحصائيات اللاعبين">
+                            <img src="images/screenshots/screenshot4.png" alt="إحصائيات اللاعبين"
+                                 onerror="this.onerror=null; this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII='; console.error('خطأ في تحميل screenshot4.png');">
                         </div>
                     </div>
                     <div class="slide-caption">إحصائيات اللاعبين</div>
@@ -333,7 +339,8 @@
                 <div class="slide">
                     <div class="phone-frame">
                         <div class="phone-screen">
-                            <img src="images/screenshots/screenshot5.png" alt="إعدادات التطبيق">
+                            <img src="images/screenshots/screenshot5.png" alt="إعدادات التطبيق"
+                                 onerror="this.onerror=null; this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII='; console.error('خطأ في تحميل screenshot5.png');">
                         </div>
                     </div>
                     <div class="slide-caption">إعدادات التطبيق</div>
@@ -384,21 +391,42 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // كود السلايدر
+            // كود السلايدر محسن
             const slider = document.querySelector('.slider');
             const slides = document.querySelectorAll('.slide');
             const navButtons = document.querySelectorAll('.slider-nav button');
             let currentSlide = 0;
             
+            // التأكد من تحميل الصور
+            const preloadImages = () => {
+                console.log("تحميل الصور...");
+                const images = document.querySelectorAll('.phone-screen img');
+                images.forEach((img, index) => {
+                    console.log(`صورة ${index + 1}: ${img.src}`);
+                    // التحقق مما إذا كانت الصورة موجودة أم لا
+                    img.onerror = () => console.error(`خطأ في تحميل الصورة: ${img.src}`);
+                    img.onload = () => console.log(`تم تحميل الصورة: ${img.src}`);
+                });
+            };
+            
             function goToSlide(index) {
-                slider.style.transform = `translateX(${-index * 100}%)`;
+                // تصحيح لمشكلة RTL
+                const slideWidth = 100 / slides.length;
+                slider.style.transform = document.dir === 'rtl' 
+                    ? `translateX(${index * slideWidth}%)` 
+                    : `translateX(${-index * slideWidth}%)`;
                 
                 // تحديث حالة الأزرار
                 navButtons.forEach(btn => btn.classList.remove('active'));
                 navButtons[index].classList.add('active');
                 
                 currentSlide = index;
+                
+                console.log(`الانتقال إلى الشريحة ${index + 1}`);
             }
+            
+            // التحقق من تحميل الصور
+            preloadImages();
             
             // معالجة النقر على أزرار التنقل
             navButtons.forEach(button => {
