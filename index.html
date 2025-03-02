@@ -18,7 +18,6 @@
             overflow-x: hidden;
             width: 100%;
             position: relative;
-            max-width: 100vw;
         }
         
         body {
@@ -77,7 +76,6 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
             margin-bottom: 3rem;
             width: 100%;
-            max-width: 100%;
         }
         
         .download-btn {
@@ -122,7 +120,6 @@
         .slider-container {
             position: relative;
             max-width: 800px;
-            width: 100%;
             margin: 0 auto;
             overflow: hidden;
             border-radius: 15px;
@@ -134,51 +131,17 @@
         .slider {
             display: flex;
             transition: transform 0.5s ease;
-            width: 100%;
+            width: 500%;
         }
         
         .slide {
-            min-width: 100%;
-            flex: 0 0 100%;
+            width: 20%;
             position: relative;
             display: flex;
             justify-content: center;
-            align-items: center;
+            flex-shrink: 0;
         }
         
-        /* أزرار التنقل في السلايدر */
-        .slider-prev, .slider-next {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 18px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            z-index: 10;
-            transition: background-color 0.3s;
-        }
-        
-        .slider-prev {
-            left: 10px;
-        }
-        
-        .slider-next {
-            right: 10px;
-        }
-        
-        .slider-prev:hover, .slider-next:hover {
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-        
-        /* تعديل حجم الصور لتبدو كشاشات موبايل */
         .phone-frame {
             width: 280px;
             height: 550px;
@@ -188,7 +151,7 @@
             overflow: hidden;
             padding: 10px;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            max-width: 95%;
+            max-width: 100%;
         }
         
         .phone-screen {
@@ -239,10 +202,14 @@
             background-color: #8B0000;
         }
         
-        .instructions, .instructions-before-slider {
+        .instructions-before-slider {
             margin-top: 3rem;
             width: 100%;
-            max-width: 100%;
+        }
+        
+        .instructions {
+            margin-top: 3rem;
+            width: 100%;
         }
         
         .step {
@@ -303,14 +270,6 @@
             }
         }
         
-        @keyframes floatBallSmallScreen {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(20px, 20px) rotate(90deg); }
-            50% { transform: translate(10px, 30px) rotate(180deg); }
-            75% { transform: translate(-10px, 20px) rotate(270deg); }
-            100% { transform: translate(0, 0) rotate(360deg); }
-        }
-        
         @media (max-width: 768px) {
             header {
                 flex-direction: column;
@@ -322,7 +281,7 @@
             }
             
             h1 {
-                font-size: 2.2rem;
+                font-size: 2.5rem;
             }
             
             .phone-frame {
@@ -348,12 +307,7 @@
             .ball {
                 width: 40px;
                 height: 40px;
-            }
-            
-            .slider-prev, .slider-next {
-                width: 30px;
-                height: 30px;
-                font-size: 14px;
+                animation-name: floatBallSmallScreen;
             }
         }
         
@@ -364,7 +318,7 @@
             }
             
             h1 {
-                font-size: 1.8rem;
+                font-size: 2rem;
             }
             
             .container {
@@ -374,6 +328,14 @@
             .ball:nth-child(4), .ball:nth-child(5) {
                 display: none;
             }
+        }
+        
+        @keyframes floatBallSmallScreen {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(20px, 20px) rotate(90deg); }
+            50% { transform: translate(10px, 30px) rotate(180deg); }
+            75% { transform: translate(-10px, 20px) rotate(270deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
         }
     </style>
 </head>
@@ -410,8 +372,6 @@
         </section>
 
         <section class="slider-container">
-            <button class="slider-prev">&#10094;</button>
-            <button class="slider-next">&#10095;</button>
             <div class="slider">
                 <div class="slide">
                     <div class="phone-frame">
@@ -523,159 +483,68 @@
             const slider = document.querySelector('.slider');
             const slides = document.querySelectorAll('.slide');
             const navButtons = document.querySelectorAll('.slider-nav button');
-            const prevButton = document.querySelector('.slider-prev');
-            const nextButton = document.querySelector('.slider-next');
             let currentSlide = 0;
-            let slideInterval;
-            let touchStartX = 0;
-            let touchEndX = 0;
             
-            // وظيفة الانتقال بين الشرائح
+            const preloadImages = () => {
+                const images = document.querySelectorAll('.phone-screen img');
+                images.forEach((img, index) => {
+                    img.onerror = () => console.error(`خطأ في تحميل الصورة: ${img.src}`);
+                    img.onload = () => console.log(`تم تحميل الصورة: ${img.src}`);
+                });
+            };
+            
             function goToSlide(index) {
-                // تأكد من صحة الفهرس
-                if (index < 0) index = slides.length - 1;
-                if (index >= slides.length) index = 0;
+                const slideWidth = 100 / slides.length;
+                slider.style.transform = document.dir === 'rtl' 
+                    ? `translateX(${index * slideWidth}%)` 
+                    : `translateX(${-index * slideWidth}%)`;
+                
+                navButtons.forEach(btn => btn.classList.remove('active'));
+                navButtons[index].classList.add('active');
                 
                 currentSlide = index;
-                
-                // تحديث موضع السلايدر
-                slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-                
-                // تحديث حالة أزرار التنقل
-                navButtons.forEach((btn, i) => {
-                    btn.classList.toggle('active', i === currentSlide);
-                });
             }
             
-            // الانتقال للشريحة التالية
-            function nextSlide() {
-                goToSlide(currentSlide + 1);
-            }
+            preloadImages();
             
-            // الانتقال للشريحة السابقة
-            function prevSlide() {
-                goToSlide(currentSlide - 1);
-            }
-            
-            // معالجة أزرار التنقل الصغيرة
             navButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const index = parseInt(button.getAttribute('data-index'));
                     goToSlide(index);
-                    resetInterval();
                 });
             });
             
-            // معالجة أزرار السابق/التالي
-            prevButton.addEventListener('click', () => {
-                prevSlide();
-                resetInterval();
-            });
+            setInterval(() => {
+                currentSlide = (currentSlide + 1) % slides.length;
+                goToSlide(currentSlide);
+            }, 4000);
             
-            nextButton.addEventListener('click', () => {
-                nextSlide();
-                resetInterval();
-            });
-            
-            // إضافة دعم اللمس
-            slider.addEventListener('touchstart', (e) => {
-                touchStartX = e.changedTouches[0].screenX;
-            }, {passive: true});
-            
-            slider.addEventListener('touchend', (e) => {
-                touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
-            }, {passive: true});
-            
-            function handleSwipe() {
-                const swipeThreshold = 50;
-                
-                if (touchEndX < touchStartX - swipeThreshold) {
-                    nextSlide();
-                    resetInterval();
-                } else if (touchEndX > touchStartX + swipeThreshold) {
-                    prevSlide();
-                    resetInterval();
-                }
-            }
-            
-            // التحكم بلوحة المفاتيح
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowLeft') {
-                    document.dir === 'rtl' ? nextSlide() : prevSlide();
-                    resetInterval();
-                } else if (e.key === 'ArrowRight') {
-                    document.dir === 'rtl' ? prevSlide() : nextSlide();
-                    resetInterval();
-                }
-            });
-            
-            // إعادة ضبط الفاصل الزمني
-            function resetInterval() {
-                clearInterval(slideInterval);
-                startInterval();
-            }
-            
-            // بدء التمرير التلقائي
-            function startInterval() {
-                slideInterval = setInterval(() => {
-                    nextSlide();
-                }, 5000);
-            }
-            
-            // تعيين الشريحة الأولى وبدء التمرير التلقائي
-            goToSlide(0);
-            startInterval();
-            
-            // إيقاف التمرير عند تحويم الماوس
-            const sliderContainer = document.querySelector('.slider-container');
-            sliderContainer.addEventListener('mouseenter', () => {
-                clearInterval(slideInterval);
-            });
-            
-            sliderContainer.addEventListener('mouseleave', () => {
-                startInterval();
-            });
-            
-            // تحسين لموضع وحجم كرات القدم
             function createRandomBalls() {
-                // إزالة الكرات القديمة (غير الثابتة)
-                document.querySelectorAll('.ball:not([style*="position"])').forEach(ball => {
-                    ball.remove();
-                });
-                
                 const body = document.body;
                 const viewportWidth = window.innerWidth;
                 const viewportHeight = window.innerHeight;
-                // تحديد عدد الكرات بناءً على حجم الشاشة
+                
                 const numberOfBalls = viewportWidth < 480 ? 2 : (viewportWidth < 768 ? 3 : 5);
                 
                 for (let i = 0; i < numberOfBalls; i++) {
                     const ball = document.createElement('div');
                     ball.classList.add('ball');
                     
-                    // تحديد حجم أصغر للكرات للشاشات الصغيرة
                     const maxSize = viewportWidth < 480 ? 30 : 40;
                     const size = 20 + Math.random() * maxSize;
                     
-                    // تأكد من أن الكرة لا تتجاوز حدود النافذة
-                    const safeZone = size / 2 + 20; // هامش أمان
-                    
-                    // تحديد مواضع آمنة داخل العرض والارتفاع
+                    const safeZone = size / 2 + 20;
                     const top = safeZone + Math.random() * (viewportHeight - safeZone * 2);
                     const left = safeZone + Math.random() * (viewportWidth - safeZone * 2);
                     
-                    // تأخير عشوائي للحركة
                     const delay = Math.random() * -15;
                     
-                    // تعيين خصائص الكرة
                     ball.style.top = `${top}px`;
                     ball.style.left = `${left}px`;
                     ball.style.width = `${size}px`;
                     ball.style.height = `${size}px`;
                     ball.style.animationDelay = `${delay}s`;
                     
-                    // تقليل نطاق حركة الكرات للشاشات الصغيرة
                     if (viewportWidth < 768) {
                         ball.style.animationName = 'floatBallSmallScreen';
                     }
@@ -684,29 +553,16 @@
                 }
             }
             
-            // إنشاء كرات بحجم مناسب عند تحميل الصفحة
-            createRandomBalls();
-            
-            // إعادة ضبط الكرات عند تغيير حجم النافذة
             window.addEventListener('resize', function() {
-                // منع تكرار الاستدعاء (تحسين الأداء)
-                if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
-                
-                this.resizeTimeout = setTimeout(function() {
-                    createRandomBalls();
-                }, 200);
+                document.querySelectorAll('.ball').forEach(ball => {
+                    if (!ball.hasAttribute('style')) {
+                        ball.remove();
+                    }
+                });
+                createRandomBalls();
             });
             
-            // منع حدوث التمرير غير المقصود
-            document.addEventListener('touchmove', function(e) {
-                // تأكد من أن اللمس ليس على السلايدر
-                if (!e.target.closest('.slider-container')) {
-                    // لا تمنع التمرير العمودي
-                    if (Math.abs(touchStartX - e.touches[0].screenX) > 10) {
-                        e.preventDefault();
-                    }
-                }
-            }, { passive: false });
+            createRandomBalls();
         });
     </script>
 </body>
