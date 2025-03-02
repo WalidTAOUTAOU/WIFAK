@@ -15,7 +15,7 @@
         }
         
         html, body {
-            overflow-x: hidden; /* منع التمرير الأفقي */
+            overflow-x: hidden;
             width: 100%;
             position: relative;
         }
@@ -34,7 +34,7 @@
             padding: 1rem;
             position: relative;
             z-index: 10;
-            overflow-x: hidden; /* منع التمرير الأفقي داخل الحاوية */
+            overflow-x: hidden;
         }
         
         header {
@@ -42,7 +42,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 3rem;
-            flex-wrap: wrap; /* للتكيف مع الشاشات الصغيرة */
+            flex-wrap: wrap;
         }
         
         .logo {
@@ -76,7 +76,7 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
             margin-bottom: 3rem;
             width: 100%;
-            max-width: 100%; /* منع تجاوز العرض */
+            max-width: 100%;
         }
         
         .download-btn {
@@ -133,18 +133,48 @@
         .slider {
             display: flex;
             transition: transform 0.5s ease;
-            width: 500%; /* لخمس شرائح */
+            width: 500%;
         }
         
         .slide {
-            width: 20%; /* 100% / 5 slides */
+            width: 20%;
             position: relative;
             display: flex;
             justify-content: center;
-            flex-shrink: 0; /* منع الانكماش */
+            flex-shrink: 0;
         }
         
-        /* تعديل حجم الصور لتبدو كشاشات موبايل */
+        .slider-prev, .slider-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: background-color 0.3s;
+        }
+        
+        .slider-prev {
+            left: 10px;
+        }
+        
+        .slider-next {
+            right: 10px;
+        }
+        
+        .slider-prev:hover, .slider-next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        
         .phone-frame {
             width: 280px;
             height: 550px;
@@ -154,7 +184,7 @@
             overflow: hidden;
             padding: 10px;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            max-width: 95%; /* منع تجاوز عرض الشاشات الصغيرة */
+            max-width: 95%;
         }
         
         .phone-screen {
@@ -208,7 +238,7 @@
         .instructions, .instructions-before-slider {
             margin-top: 3rem;
             width: 100%;
-            max-width: 100%; /* منع تجاوز العرض */
+            max-width: 100%;
         }
         
         .step {
@@ -240,7 +270,7 @@
         }
         
         .ball {
-            position: fixed; /* تغيير من absolute إلى fixed */
+            position: fixed;
             width: 60px;
             height: 60px;
             background-image: url('images/ball.svg');
@@ -248,10 +278,9 @@
             border-radius: 50%;
             z-index: 1;
             animation: floatBall 15s infinite linear;
-            pointer-events: none; /* عدم التأثير على التفاعل مع العناصر الأخرى */
+            pointer-events: none;
         }
         
-        /* تعديل حركة الكرات لتبقى ضمن الشاشة */
         @keyframes floatBall {
             0% {
                 transform: translate(0, 0) rotate(0deg);
@@ -270,7 +299,14 @@
             }
         }
         
-        /* تحسين التصميم المتجاوب للشاشات الصغيرة */
+        @keyframes floatBallSmallScreen {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(20px, 20px) rotate(90deg); }
+            50% { transform: translate(10px, 30px) rotate(180deg); }
+            75% { transform: translate(-10px, 20px) rotate(270deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+        
         @media (max-width: 768px) {
             header {
                 flex-direction: column;
@@ -282,7 +318,7 @@
             }
             
             h1 {
-                font-size: 2.2rem; /* تصغير حجم العنوان */
+                font-size: 2.2rem;
             }
             
             .phone-frame {
@@ -291,28 +327,32 @@
             }
             
             .container {
-                padding: 1rem; /* تقليل البادينج */
+                padding: 1rem;
             }
             
             .download-section, .step {
-                padding: 1.2rem; /* تقليل البادينج */
+                padding: 1.2rem;
             }
             
             .download-btn, .store-btn {
-                display: block; /* جعل الأزرار بعرض كامل */
+                display: block;
                 width: 100%;
                 margin: 1rem 0;
                 text-align: center;
             }
             
-            /* تعديل حجم ومكان الكرات للشاشات الصغيرة */
             .ball {
                 width: 40px;
                 height: 40px;
             }
+            
+            .slider-prev, .slider-next {
+                width: 30px;
+                height: 30px;
+                font-size: 14px;
+            }
         }
         
-        /* تحسين إضافي للشاشات الصغيرة جدًا */
         @media (max-width: 480px) {
             .phone-frame {
                 width: 180px;
@@ -327,7 +367,6 @@
                 padding: 0.8rem;
             }
             
-            /* تقليل عدد الكرات المتحركة للشاشات الصغيرة جدًا */
             .ball:nth-child(4), .ball:nth-child(5) {
                 display: none;
             }
@@ -335,7 +374,6 @@
     </style>
 </head>
 <body>
-    <!-- كرات متحركة في الخلفية - تعديل الإحداثيات لضمان البقاء داخل الشاشة -->
     <div class="ball" style="top: 10%; left: 5%; animation-delay: 0s;"></div>
     <div class="ball" style="top: 70%; left: 70%; animation-delay: -2s;"></div>
     <div class="ball" style="top: 40%; left: 50%; animation-delay: -5s;"></div>
@@ -368,12 +406,14 @@
         </section>
 
         <section class="slider-container">
+            <button class="slider-prev">&#10094;</button>
+            <button class="slider-next">&#10095;</button>
             <div class="slider">
                 <div class="slide">
                     <div class="phone-frame">
                         <div class="phone-screen">
                             <img src="images/screenshots/screenshot1.png" alt="الشاشة الرئيسية للتطبيق" 
-                                 onerror="this.onerror=null; this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII='; console.error('خطأ في تحميل screenshot1.png');">
+                                 onerror="this.onerror=null; this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';">
                         </div>
                     </div>
                     <div class="slide-caption">الخطوة الاولى</div>
@@ -382,7 +422,7 @@
                     <div class="phone-frame">
                         <div class="phone-screen">
                             <img src="images/screenshots/screenshot2.png" alt="جدول المباريات القادمة"
-                                 onerror="this.onerror=null; this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII='; console.error('خطأ في تحميل screenshot2.png');">
+                                 onerror="this.onerror=null; this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';">
                         </div>
                     </div>
                     <div class="slide-caption">الخطوة الثانية</div>
@@ -391,7 +431,7 @@
                     <div class="phone-frame">
                         <div class="phone-screen">
                             <img src="images/screenshots/screenshot3.png" alt="آخر أخبار النادي"
-                                 onerror="this.onerror=null; this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII='; console.error('خطأ في تحميل screenshot3.png');">
+                                 onerror="this.onerror=null; this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';">
                         </div>
                     </div>
                     <div class="slide-caption">الخطوة الثالثة</div>
@@ -400,7 +440,7 @@
                     <div class="phone-frame">
                         <div class="phone-screen">
                             <img src="images/screenshots/screenshot4.png" alt="إحصائيات اللاعبين"
-                                 onerror="this.onerror=null; this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII='; console.error('خطأ في تحميل screenshot4.png');">
+                                 onerror="this.onerror=null; this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';">
                         </div>
                     </div>
                     <div class="slide-caption">الخطوة الرابعة</div>
@@ -409,7 +449,7 @@
                     <div class="phone-frame">
                         <div class="phone-screen">
                             <img src="images/screenshots/screenshot5.png" alt="إعدادات التطبيق"
-                                 onerror="this.onerror=null; this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII='; console.error('خطأ في تحميل screenshot5.png');">
+                                 onerror="this.onerror=null; this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';">
                         </div>
                     </div>
                     <div class="slide-caption">الخطوة الخامسة</div>
@@ -476,78 +516,127 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // كود السلايدر محسن
             const slider = document.querySelector('.slider');
             const slides = document.querySelectorAll('.slide');
             const navButtons = document.querySelectorAll('.slider-nav button');
+            const prevButton = document.querySelector('.slider-prev');
+            const nextButton = document.querySelector('.slider-next');
             let currentSlide = 0;
-            
-            // التأكد من تحميل الصور
-            const preloadImages = () => {
-                console.log("تحميل الصور...");
-                const images = document.querySelectorAll('.phone-screen img');
-                images.forEach((img, index) => {
-                    console.log(`صورة ${index + 1}: ${img.src}`);
-                    // التحقق مما إذا كانت الصورة موجودة أم لا
-                    img.onerror = () => console.error(`خطأ في تحميل الصورة: ${img.src}`);
-                    img.onload = () => console.log(`تم تحميل الصورة: ${img.src}`);
-                });
-            };
+            let slideInterval;
+            let touchStartX = 0;
+            let touchEndX = 0;
             
             function goToSlide(index) {
-                // تصحيح لمشكلة RTL
-                const slideWidth = 100 / slides.length;
-                slider.style.transform = document.dir === 'rtl' 
-                    ? `translateX(${index * slideWidth}%)` 
-                    : `translateX(${-index * slideWidth}%)`;
-                
-                // تحديث حالة الأزرار
-                navButtons.forEach(btn => btn.classList.remove('active'));
-                navButtons[index].classList.add('active');
+                if (index < 0) index = slides.length - 1;
+                if (index >= slides.length) index = 0;
                 
                 currentSlide = index;
+                
+                const slideWidth = 100 / slides.length;
+                slider.style.transform = `translateX(${-currentSlide * slideWidth}%)`;
+                
+                navButtons.forEach(btn => btn.classList.remove('active'));
+                navButtons[currentSlide].classList.add('active');
             }
             
-            // التحقق من تحميل الصور
-            preloadImages();
+            function nextSlide() {
+                goToSlide(currentSlide + 1);
+            }
             
-            // معالجة النقر على أزرار التنقل
+            function prevSlide() {
+                goToSlide(currentSlide - 1);
+            }
+            
             navButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const index = parseInt(button.getAttribute('data-index'));
                     goToSlide(index);
+                    resetInterval();
                 });
             });
             
-            // تغيير الشرائح تلقائيًا كل 4 ثوان
-            setInterval(() => {
-                currentSlide = (currentSlide + 1) % slides.length;
-                goToSlide(currentSlide);
-            }, 4000);
+            prevButton.addEventListener('click', () => {
+                prevSlide();
+                resetInterval();
+            });
             
-            // تعديل وظيفة إنشاء الكرات العشوائية للتأكد من عدم تجاوز حدود الشاشة
+            nextButton.addEventListener('click', () => {
+                nextSlide();
+                resetInterval();
+            });
+            
+            slider.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, {passive: true});
+            
+            slider.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, {passive: true});
+            
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                
+                if (touchEndX < touchStartX - swipeThreshold) {
+                    nextSlide();
+                    resetInterval();
+                } else if (touchEndX > touchStartX + swipeThreshold) {
+                    prevSlide();
+                    resetInterval();
+                }
+            }
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    document.dir === 'rtl' ? nextSlide() : prevSlide();
+                    resetInterval();
+                } else if (e.key === 'ArrowRight') {
+                    document.dir === 'rtl' ? prevSlide() : nextSlide();
+                    resetInterval();
+                }
+            });
+            
+            function resetInterval() {
+                clearInterval(slideInterval);
+                startInterval();
+            }
+            
+            function startInterval() {
+                slideInterval = setInterval(() => {
+                    nextSlide();
+                }, 5000);
+            }
+            
+            goToSlide(0);
+            startInterval();
+            
+            const sliderContainer = document.querySelector('.slider-container');
+            sliderContainer.addEventListener('mouseenter', () => {
+                clearInterval(slideInterval);
+            });
+            
+            sliderContainer.addEventListener('mouseleave', () => {
+                startInterval();
+            });
+            
             function createRandomBalls() {
                 const body = document.body;
                 const viewportWidth = window.innerWidth;
                 const viewportHeight = window.innerHeight;
                 
-                // عدد الكرات يعتمد على حجم الشاشة
                 const numberOfBalls = viewportWidth < 480 ? 2 : (viewportWidth < 768 ? 3 : 5);
                 
                 for (let i = 0; i < numberOfBalls; i++) {
                     const ball = document.createElement('div');
                     ball.classList.add('ball');
                     
-                    // حجم الكرة يعتمد على حجم الشاشة
                     const maxSize = viewportWidth < 480 ? 30 : 40;
                     const size = 20 + Math.random() * maxSize;
                     
-                    // تأكد من أن الكرة لا تتجاوز حدود النافذة
-                    const safeZone = size / 2 + 20; // هامش أمان
+                    const safeZone = size / 2 + 20;
                     const top = safeZone + Math.random() * (viewportHeight - safeZone * 2);
                     const left = safeZone + Math.random() * (viewportWidth - safeZone * 2);
                     
-                    // تأخير عشوائي للحركة
                     const delay = Math.random() * -15;
                     
                     ball.style.top = `${top}px`;
@@ -556,7 +645,6 @@
                     ball.style.height = `${size}px`;
                     ball.style.animationDelay = `${delay}s`;
                     
-                    // تقليل نطاق الحركة للكرات في الشاشات الصغيرة
                     if (viewportWidth < 768) {
                         ball.style.animationName = 'floatBallSmallScreen';
                     }
@@ -565,31 +653,18 @@
                 }
             }
             
-            // تعريف حركة جديدة للشاشات الصغيرة
-            const styleSheet = document.styleSheets[0];
-            styleSheet.insertRule(`
-                @keyframes floatBallSmallScreen {
-                    0% { transform: translate(0, 0) rotate(0deg); }
-                    25% { transform: translate(20px, 20px) rotate(90deg); }
-                    50% { transform: translate(10px, 30px) rotate(180deg); }
-                    75% { transform: translate(-10px, 20px) rotate(270deg); }
-                    100% { transform: translate(0, 0) rotate(360deg); }
-                }
-            `, styleSheet.cssRules.length);
-            
-            // إنشاء الكرات المتحركة مع مراعاة حجم الشاشة
             createRandomBalls();
             
-            // التأكد من تعديل حجم العناصر عند تغيير حجم النافذة
             window.addEventListener('resize', function() {
-                // إزالة جميع الكرات الحالية
                 document.querySelectorAll('.ball').forEach(ball => {
-                    if (!ball.hasAttribute('style')) { // لا تزيل الكرات الثابتة في HTML
+if (!ball.hasAttribute('style')) {
                         ball.remove();
                     }
                 });
                 
-                // إنشاء كرات جديدة تناسب الحجم الجديد
                 createRandomBalls();
             });
         });
+    </script>
+</body>
+</html>
