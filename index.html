@@ -14,21 +14,27 @@
             font-family: 'Tajawal', sans-serif;
         }
         
+        html, body {
+            overflow-x: hidden; /* منع التمرير الأفقي */
+            width: 100%;
+            position: relative;
+        }
+        
         body {
-            /* تغيير تدرج الخلفية من الأحمر الغامق إلى البرتقالي */
             background: linear-gradient(135deg, #8B0000, #FF4500);
             color: #fff;
             min-height: 100vh;
-            overflow-x: hidden;
             position: relative;
         }
         
         .container {
             max-width: 1200px;
+            width: 100%;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 1rem;
             position: relative;
             z-index: 10;
+            overflow-x: hidden; /* منع التمرير الأفقي داخل الحاوية */
         }
         
         header {
@@ -36,6 +42,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 3rem;
+            flex-wrap: wrap; /* للتكيف مع الشاشات الصغيرة */
         }
         
         .logo {
@@ -68,6 +75,8 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
             margin-bottom: 3rem;
+            width: 100%;
+            max-width: 100%; /* منع تجاوز العرض */
         }
         
         .download-btn {
@@ -112,6 +121,7 @@
         .slider-container {
             position: relative;
             max-width: 800px;
+            width: 100%;
             margin: 0 auto;
             overflow: hidden;
             border-radius: 15px;
@@ -144,6 +154,7 @@
             overflow: hidden;
             padding: 10px;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            max-width: 95%; /* منع تجاوز عرض الشاشات الصغيرة */
         }
         
         .phone-screen {
@@ -194,8 +205,10 @@
             background-color: #8B0000;
         }
         
-        .instructions {
+        .instructions, .instructions-before-slider {
             margin-top: 3rem;
+            width: 100%;
+            max-width: 100%; /* منع تجاوز العرض */
         }
         
         .step {
@@ -206,6 +219,7 @@
             margin-bottom: 1.5rem;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s;
+            width: 100%;
         }
         
         .step:hover {
@@ -222,10 +236,11 @@
             margin-top: 4rem;
             padding: 1.5rem;
             border-top: 1px solid rgba(255, 255, 255, 0.2);
+            width: 100%;
         }
         
         .ball {
-            position: absolute;
+            position: fixed; /* تغيير من absolute إلى fixed */
             width: 60px;
             height: 60px;
             background-image: url('images/ball.svg');
@@ -233,26 +248,29 @@
             border-radius: 50%;
             z-index: 1;
             animation: floatBall 15s infinite linear;
+            pointer-events: none; /* عدم التأثير على التفاعل مع العناصر الأخرى */
         }
         
+        /* تعديل حركة الكرات لتبقى ضمن الشاشة */
         @keyframes floatBall {
             0% {
                 transform: translate(0, 0) rotate(0deg);
             }
             25% {
-                transform: translate(100px, 50px) rotate(90deg);
+                transform: translate(50px, 50px) rotate(90deg);
             }
             50% {
-                transform: translate(50px, 100px) rotate(180deg);
+                transform: translate(25px, 80px) rotate(180deg);
             }
             75% {
-                transform: translate(-50px, 50px) rotate(270deg);
+                transform: translate(-25px, 50px) rotate(270deg);
             }
             100% {
                 transform: translate(0, 0) rotate(360deg);
             }
         }
         
+        /* تحسين التصميم المتجاوب للشاشات الصغيرة */
         @media (max-width: 768px) {
             header {
                 flex-direction: column;
@@ -264,23 +282,65 @@
             }
             
             h1 {
-                font-size: 2.5rem;
+                font-size: 2.2rem; /* تصغير حجم العنوان */
             }
             
             .phone-frame {
                 width: 220px;
                 height: 440px;
             }
+            
+            .container {
+                padding: 1rem; /* تقليل البادينج */
+            }
+            
+            .download-section, .step {
+                padding: 1.2rem; /* تقليل البادينج */
+            }
+            
+            .download-btn, .store-btn {
+                display: block; /* جعل الأزرار بعرض كامل */
+                width: 100%;
+                margin: 1rem 0;
+                text-align: center;
+            }
+            
+            /* تعديل حجم ومكان الكرات للشاشات الصغيرة */
+            .ball {
+                width: 40px;
+                height: 40px;
+            }
+        }
+        
+        /* تحسين إضافي للشاشات الصغيرة جدًا */
+        @media (max-width: 480px) {
+            .phone-frame {
+                width: 180px;
+                height: 360px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .container {
+                padding: 0.8rem;
+            }
+            
+            /* تقليل عدد الكرات المتحركة للشاشات الصغيرة جدًا */
+            .ball:nth-child(4), .ball:nth-child(5) {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- كرات متحركة في الخلفية -->
+    <!-- كرات متحركة في الخلفية - تعديل الإحداثيات لضمان البقاء داخل الشاشة -->
     <div class="ball" style="top: 10%; left: 5%; animation-delay: 0s;"></div>
-    <div class="ball" style="top: 70%; left: 80%; animation-delay: -2s;"></div>
-    <div class="ball" style="top: 40%; left: 60%; animation-delay: -5s;"></div>
-    <div class="ball" style="top: 80%; left: 30%; animation-delay: -8s;"></div>
-    <div class="ball" style="top: 20%; left: 90%; animation-delay: -12s;"></div>
+    <div class="ball" style="top: 70%; left: 70%; animation-delay: -2s;"></div>
+    <div class="ball" style="top: 40%; left: 50%; animation-delay: -5s;"></div>
+    <div class="ball" style="top: 80%; left: 20%; animation-delay: -8s;"></div>
+    <div class="ball" style="top: 20%; left: 80%; animation-delay: -12s;"></div>
     
     <div class="container">
         <header>
@@ -325,7 +385,7 @@
                                  onerror="this.onerror=null; this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII='; console.error('خطأ في تحميل screenshot2.png');">
                         </div>
                     </div>
-                    <div class="slide-caption">الخطوة الثانيو</div>
+                    <div class="slide-caption">الخطوة الثانية</div>
                 </div>
                 <div class="slide">
                     <div class="phone-frame">
@@ -334,7 +394,7 @@
                                  onerror="this.onerror=null; this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII='; console.error('خطأ في تحميل screenshot3.png');">
                         </div>
                     </div>
-                    <div class="slide-caption">الخطوة الثالتة</div>
+                    <div class="slide-caption">الخطوة الثالثة</div>
                 </div>
                 <div class="slide">
                     <div class="phone-frame">
@@ -343,7 +403,7 @@
                                  onerror="this.onerror=null; this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII='; console.error('خطأ في تحميل screenshot4.png');">
                         </div>
                     </div>
-                    <div class="slide-caption">إالخطوة الرابعة</div>
+                    <div class="slide-caption">الخطوة الرابعة</div>
                 </div>
                 <div class="slide">
                     <div class="phone-frame">
@@ -352,7 +412,7 @@
                                  onerror="this.onerror=null; this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII='; console.error('خطأ في تحميل screenshot5.png');">
                         </div>
                     </div>
-                    <div class="slide-caption">إالخطوة الخامسة </div>
+                    <div class="slide-caption">الخطوة الخامسة</div>
                 </div>
             </div>
             <div class="slider-nav">
@@ -401,7 +461,7 @@
                 <a href="#" style="color: #FFD700; text-decoration: none; margin: 0 10px; font-weight: bold;">اتصل بنا</a>
             </div>
             <div class="social-icons" style="margin-top: 15px;">
-                <a href="https://www.facebook.com/elwifakclub" target="_blank" style="margin: 0 5px; display: inline-block; width: 40px; height: 40px; background-color: rgba(255, 255, 255, 0.2); border-radius: 50%; text-align: center; line-height: 40px;">
+                <a href="https://www.facebook.com/club.el.wifak.boumia" target="_blank" style="margin: 0 5px; display: inline-block; width: 40px; height: 40px; background-color: rgba(255, 255, 255, 0.2); border-radius: 50%; text-align: center; line-height: 40px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
                 </a>
                 <a href="#" style="margin: 0 5px; display: inline-block; width: 40px; height: 40px; background-color: rgba(255, 255, 255, 0.2); border-radius: 50%; text-align: center; line-height: 40px;">
@@ -446,8 +506,6 @@
                 navButtons[index].classList.add('active');
                 
                 currentSlide = index;
-                
-                console.log(`الانتقال إلى الشريحة ${index + 1}`);
             }
             
             // التحقق من تحميل الصور
@@ -467,36 +525,71 @@
                 goToSlide(currentSlide);
             }, 4000);
             
-            // إنشاء المزيد من كرات كرة القدم عشوائيًا
+            // تعديل وظيفة إنشاء الكرات العشوائية للتأكد من عدم تجاوز حدود الشاشة
             function createRandomBalls() {
                 const body = document.body;
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
                 
-                for (let i = 0; i < 5; i++) {
+                // عدد الكرات يعتمد على حجم الشاشة
+                const numberOfBalls = viewportWidth < 480 ? 2 : (viewportWidth < 768 ? 3 : 5);
+                
+                for (let i = 0; i < numberOfBalls; i++) {
                     const ball = document.createElement('div');
                     ball.classList.add('ball');
                     
-                    // موقع عشوائي
-                    const top = Math.random() * 100;
-                    const left = Math.random() * 100;
+                    // حجم الكرة يعتمد على حجم الشاشة
+                    const maxSize = viewportWidth < 480 ? 30 : 40;
+                    const size = 20 + Math.random() * maxSize;
                     
-                    // حجم عشوائي
-                    const size = 30 + Math.random() * 40;
+                    // تأكد من أن الكرة لا تتجاوز حدود النافذة
+                    const safeZone = size / 2 + 20; // هامش أمان
+                    const top = safeZone + Math.random() * (viewportHeight - safeZone * 2);
+                    const left = safeZone + Math.random() * (viewportWidth - safeZone * 2);
                     
                     // تأخير عشوائي للحركة
                     const delay = Math.random() * -15;
                     
-                    ball.style.top = `${top}%`;
-                    ball.style.left = `${left}%`;
+                    ball.style.top = `${top}px`;
+                    ball.style.left = `${left}px`;
                     ball.style.width = `${size}px`;
                     ball.style.height = `${size}px`;
                     ball.style.animationDelay = `${delay}s`;
+                    
+                    // تقليل نطاق الحركة للكرات في الشاشات الصغيرة
+                    if (viewportWidth < 768) {
+                        ball.style.animationName = 'floatBallSmallScreen';
+                    }
                     
                     body.appendChild(ball);
                 }
             }
             
+            // تعريف حركة جديدة للشاشات الصغيرة
+            const styleSheet = document.styleSheets[0];
+            styleSheet.insertRule(`
+                @keyframes floatBallSmallScreen {
+                    0% { transform: translate(0, 0) rotate(0deg); }
+                    25% { transform: translate(20px, 20px) rotate(90deg); }
+                    50% { transform: translate(10px, 30px) rotate(180deg); }
+                    75% { transform: translate(-10px, 20px) rotate(270deg); }
+                    100% { transform: translate(0, 0) rotate(360deg); }
+                }
+            `, styleSheet.cssRules.length);
+            
+            // إنشاء الكرات المتحركة مع مراعاة حجم الشاشة
             createRandomBalls();
+            
+            // التأكد من تعديل حجم العناصر عند تغيير حجم النافذة
+            window.addEventListener('resize', function() {
+                // إزالة جميع الكرات الحالية
+                document.querySelectorAll('.ball').forEach(ball => {
+                    if (!ball.hasAttribute('style')) { // لا تزيل الكرات الثابتة في HTML
+                        ball.remove();
+                    }
+                });
+                
+                // إنشاء كرات جديدة تناسب الحجم الجديد
+                createRandomBalls();
+            });
         });
-    </script>
-</body>
-</html>
