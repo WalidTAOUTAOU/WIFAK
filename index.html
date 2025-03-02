@@ -15,7 +15,8 @@
         }
         
         body {
-            background: linear-gradient(135deg, #ff6b6b, #d62828);
+            /* تغيير تدرج الخلفية من الأحمر الغامق إلى البرتقالي */
+            background: linear-gradient(135deg, #8B0000, #FF4500);
             color: #fff;
             min-height: 100vh;
             overflow-x: hidden;
@@ -44,6 +45,7 @@
             background-color: white;
             padding: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            object-fit: contain;
         }
         
         h1 {
@@ -71,7 +73,7 @@
         .download-btn {
             display: inline-block;
             background-color: #ffffff;
-            color: #d62828;
+            color: #8B0000;
             font-size: 1.2rem;
             font-weight: bold;
             padding: 1rem 2rem;
@@ -114,6 +116,8 @@
             overflow: hidden;
             border-radius: 15px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            background-color: #f5f5f5;
+            padding: 20px;
         }
         
         .slider {
@@ -124,29 +128,51 @@
         .slide {
             min-width: 100%;
             position: relative;
+            display: flex;
+            justify-content: center;
         }
         
-        .slide img {
+        /* تعديل حجم الصور لتبدو كشاشات موبايل */
+        .phone-frame {
+            width: 280px;
+            height: 550px;
+            background-color: #000;
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+            padding: 10px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .phone-screen {
             width: 100%;
-            height: auto;
+            height: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        
+        .phone-screen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             display: block;
         }
         
         .slide-caption {
             position: absolute;
-            bottom: 0;
+            bottom: -40px;
             left: 0;
             right: 0;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
+            color: #8B0000;
             padding: 1rem;
             text-align: center;
+            font-weight: bold;
         }
         
         .slider-nav {
             display: flex;
             justify-content: center;
-            margin-top: 1rem;
+            margin-top: 3rem;
         }
         
         .slider-nav button {
@@ -163,6 +189,7 @@
         
         .slider-nav button.active {
             opacity: 1;
+            background-color: #8B0000;
         }
         
         .instructions {
@@ -199,7 +226,7 @@
             position: absolute;
             width: 60px;
             height: 60px;
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0id2hpdGUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMS41Ii8+PHBhdGggZD0iTTUwLDUgTDk1LDUwIEw1MCw5NSBMNSw1MCBaIiBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjEuNSIvPjxwYXRoIGQ9Ik01LDUwIEw5NSw1MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cGF0aCBkPSJNNTAsNSBMNTAsOTUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMS41Ii8+PC9zdmc+');
+            background-image: url('images/ball.svg');
             background-size: cover;
             border-radius: 50%;
             z-index: 1;
@@ -223,6 +250,26 @@
                 transform: translate(0, 0) rotate(360deg);
             }
         }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo {
+                margin-bottom: 1rem;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .phone-frame {
+                width: 220px;
+                height: 440px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -239,36 +286,56 @@
                 <h1>El-Wifak Club</h1>
                 <p>تطبيق النادي الرسمي - تابع أخبار الفريق وجداول المباريات والنتائج!</p>
             </div>
-            <img src="/api/placeholder/400/400" alt="El-Wifak Club Logo" class="logo">
+            <img src="images/logo.png" alt="El-Wifak Club Logo" class="logo">
         </header>
         
         <section class="download-section">
             <h2>تحميل التطبيق</h2>
             <p>يمكنك الآن تحميل تطبيق El-Wifak Club مباشرة على جهازك. التطبيق يقدم لك آخر أخبار النادي، جداول المباريات، النتائج، والكثير من الميزات الأخرى!</p>
-            <a href="#" class="download-btn">تحميل APK مباشرة</a>
-            <a href="#" class="store-btn">Google Play Store</a>
+            <a href="apk/el-wifak-club.apk" class="download-btn">تحميل APK مباشرة</a>
+            <a href="https://play.google.com/store/apps/details?id=com.elwifak.club" class="store-btn">Google Play Store</a>
         </section>
         
         <section class="slider-container">
             <div class="slider">
                 <div class="slide">
-                    <img src="/api/placeholder/800/400" alt="شاشة التطبيق الرئيسية">
+                    <div class="phone-frame">
+                        <div class="phone-screen">
+                            <img src="images/screenshots/screenshot1.png" alt="الشاشة الرئيسية للتطبيق">
+                        </div>
+                    </div>
                     <div class="slide-caption">الشاشة الرئيسية للتطبيق</div>
                 </div>
                 <div class="slide">
-                    <img src="/api/placeholder/800/400" alt="صفحة جدول المباريات">
+                    <div class="phone-frame">
+                        <div class="phone-screen">
+                            <img src="images/screenshots/screenshot2.png" alt="جدول المباريات القادمة">
+                        </div>
+                    </div>
                     <div class="slide-caption">جدول المباريات القادمة</div>
                 </div>
                 <div class="slide">
-                    <img src="/api/placeholder/800/400" alt="صفحة أخبار النادي">
+                    <div class="phone-frame">
+                        <div class="phone-screen">
+                            <img src="images/screenshots/screenshot3.png" alt="آخر أخبار النادي">
+                        </div>
+                    </div>
                     <div class="slide-caption">آخر أخبار النادي</div>
                 </div>
                 <div class="slide">
-                    <img src="/api/placeholder/800/400" alt="صفحة إحصائيات اللاعبين">
+                    <div class="phone-frame">
+                        <div class="phone-screen">
+                            <img src="images/screenshots/screenshot4.png" alt="إحصائيات اللاعبين">
+                        </div>
+                    </div>
                     <div class="slide-caption">إحصائيات اللاعبين</div>
                 </div>
                 <div class="slide">
-                    <img src="/api/placeholder/800/400" alt="صفحة الإعدادات">
+                    <div class="phone-frame">
+                        <div class="phone-screen">
+                            <img src="images/screenshots/screenshot5.png" alt="إعدادات التطبيق">
+                        </div>
+                    </div>
                     <div class="slide-caption">إعدادات التطبيق</div>
                 </div>
             </div>
