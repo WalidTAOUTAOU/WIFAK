@@ -18,6 +18,7 @@
             overflow-x: hidden;
             width: 100%;
             position: relative;
+            max-width: 100vw;
         }
         
         body {
@@ -145,6 +146,7 @@
             align-items: center;
         }
         
+        /* أزرار التنقل في السلايدر */
         .slider-prev, .slider-next {
             position: absolute;
             top: 50%;
@@ -176,6 +178,7 @@
             background-color: rgba(0, 0, 0, 0.8);
         }
         
+        /* تعديل حجم الصور لتبدو كشاشات موبايل */
         .phone-frame {
             width: 280px;
             height: 550px;
@@ -527,7 +530,7 @@
             let touchStartX = 0;
             let touchEndX = 0;
             
-            // وظيفة الانتقال بين الشرائح - مبسطة ودقيقة
+            // وظيفة الانتقال بين الشرائح
             function goToSlide(index) {
                 // تأكد من صحة الفهرس
                 if (index < 0) index = slides.length - 1;
@@ -535,7 +538,7 @@
                 
                 currentSlide = index;
                 
-                // تحديث موضع السلايدر - استخدام قيمة بسيطة ومباشرة
+                // تحديث موضع السلايدر
                 slider.style.transform = `translateX(-${currentSlide * 100}%)`;
                 
                 // تحديث حالة أزرار التنقل
@@ -634,32 +637,45 @@
                 startInterval();
             });
             
+            // تحسين لموضع وحجم كرات القدم
             function createRandomBalls() {
+                // إزالة الكرات القديمة (غير الثابتة)
+                document.querySelectorAll('.ball:not([style*="position"])').forEach(ball => {
+                    ball.remove();
+                });
+                
                 const body = document.body;
                 const viewportWidth = window.innerWidth;
                 const viewportHeight = window.innerHeight;
-                
+                // تحديد عدد الكرات بناءً على حجم الشاشة
                 const numberOfBalls = viewportWidth < 480 ? 2 : (viewportWidth < 768 ? 3 : 5);
                 
                 for (let i = 0; i < numberOfBalls; i++) {
                     const ball = document.createElement('div');
                     ball.classList.add('ball');
                     
+                    // تحديد حجم أصغر للكرات للشاشات الصغيرة
                     const maxSize = viewportWidth < 480 ? 30 : 40;
                     const size = 20 + Math.random() * maxSize;
                     
-                    const safeZone = size / 2 + 20;
+                    // تأكد من أن الكرة لا تتجاوز حدود النافذة
+                    const safeZone = size / 2 + 20; // هامش أمان
+                    
+                    // تحديد مواضع آمنة داخل العرض والارتفاع
                     const top = safeZone + Math.random() * (viewportHeight - safeZone * 2);
                     const left = safeZone + Math.random() * (viewportWidth - safeZone * 2);
                     
+                    // تأخير عشوائي للحركة
                     const delay = Math.random() * -15;
                     
+                    // تعيين خصائص الكرة
                     ball.style.top = `${top}px`;
                     ball.style.left = `${left}px`;
                     ball.style.width = `${size}px`;
                     ball.style.height = `${size}px`;
                     ball.style.animationDelay = `${delay}s`;
                     
+                    // تقليل نطاق حركة الكرات للشاشات الصغيرة
                     if (viewportWidth < 768) {
                         ball.style.animationName = 'floatBallSmallScreen';
                     }
@@ -668,17 +684,29 @@
                 }
             }
             
+            // إنشاء كرات بحجم مناسب عند تحميل الصفحة
+            createRandomBalls();
+            
+            // إعادة ضبط الكرات عند تغيير حجم النافذة
             window.addEventListener('resize', function() {
-                document.querySelectorAll('.ball').forEach(ball => {
-                    if (!ball.hasAttribute('style')) {
-                        ball.remove();
-                    }
-                });
+                // منع تكرار الاستدعاء (تحسين الأداء)
+                if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
                 
-                createRandomBalls();
+                this.resizeTimeout = setTimeout(function() {
+                    createRandomBalls();
+                }, 200);
             });
             
-            createRandomBalls();
+            // منع حدوث التمرير غير المقصود
+            document.addEventListener('touchmove', function(e) {
+                // تأكد من أن اللمس ليس على السلايدر
+                if (!e.target.closest('.slider-container')) {
+                    // لا تمنع التمرير العمودي
+                    if (Math.abs(touchStartX - e.touches[0].screenX) > 10) {
+                        e.preventDefault();
+                    }
+                }
+            }, { passive: false });
         });
     </script>
 </body>
