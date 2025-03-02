@@ -133,15 +133,16 @@
         .slider {
             display: flex;
             transition: transform 0.5s ease;
-            width: 500%;
+            width: 100%;
         }
         
         .slide {
-            width: 20%;
+            min-width: 100%;
+            flex: 0 0 100%;
             position: relative;
             display: flex;
             justify-content: center;
-            flex-shrink: 0;
+            align-items: center;
         }
         
         .slider-prev, .slider-next {
@@ -526,27 +527,34 @@
             let touchStartX = 0;
             let touchEndX = 0;
             
+            // وظيفة الانتقال بين الشرائح - مبسطة ودقيقة
             function goToSlide(index) {
+                // تأكد من صحة الفهرس
                 if (index < 0) index = slides.length - 1;
                 if (index >= slides.length) index = 0;
                 
                 currentSlide = index;
                 
-                const slideWidth = 100 / slides.length;
-                slider.style.transform = `translateX(${-currentSlide * slideWidth}%)`;
+                // تحديث موضع السلايدر - استخدام قيمة بسيطة ومباشرة
+                slider.style.transform = `translateX(-${currentSlide * 100}%)`;
                 
-                navButtons.forEach(btn => btn.classList.remove('active'));
-                navButtons[currentSlide].classList.add('active');
+                // تحديث حالة أزرار التنقل
+                navButtons.forEach((btn, i) => {
+                    btn.classList.toggle('active', i === currentSlide);
+                });
             }
             
+            // الانتقال للشريحة التالية
             function nextSlide() {
                 goToSlide(currentSlide + 1);
             }
             
+            // الانتقال للشريحة السابقة
             function prevSlide() {
                 goToSlide(currentSlide - 1);
             }
             
+            // معالجة أزرار التنقل الصغيرة
             navButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const index = parseInt(button.getAttribute('data-index'));
@@ -555,6 +563,7 @@
                 });
             });
             
+            // معالجة أزرار السابق/التالي
             prevButton.addEventListener('click', () => {
                 prevSlide();
                 resetInterval();
@@ -565,6 +574,7 @@
                 resetInterval();
             });
             
+            // إضافة دعم اللمس
             slider.addEventListener('touchstart', (e) => {
                 touchStartX = e.changedTouches[0].screenX;
             }, {passive: true});
@@ -586,6 +596,7 @@
                 }
             }
             
+            // التحكم بلوحة المفاتيح
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'ArrowLeft') {
                     document.dir === 'rtl' ? nextSlide() : prevSlide();
@@ -596,20 +607,24 @@
                 }
             });
             
+            // إعادة ضبط الفاصل الزمني
             function resetInterval() {
                 clearInterval(slideInterval);
                 startInterval();
             }
             
+            // بدء التمرير التلقائي
             function startInterval() {
                 slideInterval = setInterval(() => {
                     nextSlide();
                 }, 5000);
             }
             
+            // تعيين الشريحة الأولى وبدء التمرير التلقائي
             goToSlide(0);
             startInterval();
             
+            // إيقاف التمرير عند تحويم الماوس
             const sliderContainer = document.querySelector('.slider-container');
             sliderContainer.addEventListener('mouseenter', () => {
                 clearInterval(slideInterval);
@@ -653,17 +668,17 @@
                 }
             }
             
-            createRandomBalls();
-            
             window.addEventListener('resize', function() {
                 document.querySelectorAll('.ball').forEach(ball => {
-if (!ball.hasAttribute('style')) {
+                    if (!ball.hasAttribute('style')) {
                         ball.remove();
                     }
                 });
                 
                 createRandomBalls();
             });
+            
+            createRandomBalls();
         });
     </script>
 </body>
